@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
   } else {
     cout << "Loan Amount: ";
     cin >> loan_amount;
-    while (loan_amount <= 0) {
+    while (loan_amount < 0) {
       cout << "Loan amount must be positive.\n";
       cout << "Loan Amount: ";
       cin >> loan_amount;
@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
 
     cout << "Interest Rate (% per year): ";
     cin >> yearly_interest_rate;
-    while (yearly_interest_rate <= 1) {
+    while (yearly_interest_rate < 0) {
       cout << "Interest rate must be positive.\n";
       cout << "Interest Rate (% per year): ";
       cin >> yearly_interest_rate;
@@ -61,7 +61,7 @@ int main(int argc, char *argv[]) {
 
     cout << "Monthly Payments: ";
     cin >> monthly_payment;
-    while (monthly_payment < (loan_amount * yearly_interest_rate / 12 / 100)) {
+    while (monthly_payment <= (loan_amount * yearly_interest_rate / 12 / 100)) {
       cout << "Monthly payment too low, loan will never be repaid.\n";
       cout << "Loan Amount: ";
       cin >> monthly_payment;
@@ -79,16 +79,24 @@ int main(int argc, char *argv[]) {
 
   cout << "*****************************************************************\n"
        << "\tAmortization Table\n"
-       << "*****************************************************************\n"
-       << "Month\tBalance\t\tPayment\tRate\tInterest\tPrincipal\n"
-       << "0\t$" << loan_amount << "\tN/A\tN/A\tN/A\t\tN/A\n";
+       << "*****************************************************************\n";
+
+  cout << left << setw(8) << "Month" << setw(13) << "Balance" << setw(13)
+       << "Payment" << setw(12) << "Rate" << setw(13) << "Interest" << setw(13)
+       << "Principle" << endl;
 
   while (loan_amount > 0) {
     current_month++;
     interest_paid = loan_amount * monthly_interest_rate;
     total_interest_paid += interest_paid;
 
-    if (interest_paid > monthly_payment) {
+    if (loan_amount < 0) {
+      throw runtime_error("Loan amount must be positive.");
+    }
+    if (yearly_interest_rate < 0) {
+      throw runtime_error("Interest rate must be positive");
+    }
+    if (interest_paid >= monthly_payment) {
       throw runtime_error("Interest due is greater than monthly payment, the "
                           "loan will never be paid off.");
     }
@@ -101,15 +109,15 @@ int main(int argc, char *argv[]) {
       loan_amount = 0;
     };
 
-    cout << left << setw(8) << current_month << "$" << setw(15) << loan_amount
-         << "$" << setw(7) << monthly_payment << setw(8) << noshowpoint
+    cout << left << setw(8) << current_month << "$" << setw(12) << loan_amount
+         << "$" << setw(12) << monthly_payment << setw(12) << noshowpoint
          << defaultfloat << monthly_interest_rate * 100 << fixed << showpoint
-         << "$" << setw(15) << interest_paid << "$" << setw(9) << principle_paid
-         << endl;
+         << "$" << setw(12) << interest_paid << "$" << setw(12)
+         << principle_paid << endl;
   }
 
   cout << "****************************************************************\n";
-  cout << "\nIt takes " << current_month << " months to pay off "
+  cout << "\nIt will take " << current_month << " month(s) to pay off "
        << "the loan.\n"
        << "Total interest paid is: $" << total_interest_paid;
 
