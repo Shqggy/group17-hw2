@@ -1,15 +1,13 @@
 #modify this makefile so that it will work for this new assignment
 CC=g++
-DEPS = starter.h
 
-all: starter.o main.o
-	$(CC) -std=c++11 starter.o main.o
+all: main
 
-bowling: starter.o $(DEPS)
-	$(CC) -c -std=c++11 starter.cpp
+main: main.o 
+	$(CC) -o main main.o
 
-main: main.o $(DEPS)
-	$(CC) -c -std=c++11 main.cpp
+main.o: main.cpp
+	$(CC) -c main.cpp
 
 clean: 
-	rm *.o *.out
+	rm -f main *.o *.out
