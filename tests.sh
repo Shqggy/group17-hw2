@@ -11,8 +11,8 @@ echo -e "TEST 2 (loan=2000, rate=18, payment=80)\n"
 echo "EXPECTED OUTPUT: 29 month(s) and \$312.98 paid in interest"
 echo -e "\n=================================================================\n"
 
-echo -e "TEST 3 (loan=2000, rate=12, payment=11)\n"
-./main 2000 12 11
+echo -e "TEST 3 (loan=1000, rate=12, payment=11)\n"
+./main 1000 12 11
 echo "EXPECTED OUTPUT: 241 month(s) and \$1650.85 paid in interest"
 echo -e "\n=================================================================\n"
 
